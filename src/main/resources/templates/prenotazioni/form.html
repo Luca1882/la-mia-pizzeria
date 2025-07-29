@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="it" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Form di prenotazione</title>
+</head>
+
+<body>
+    <div th:replace="~{layout :: layout(~{::content})}">
+        <div th:fragment="content">
+            <form th:action="@{/prenotazioni/salva}" th:object="${prenotazione}" method="post" class="row g-3">
+
+                <!-- Cliente -->
+                <div class="col-md-6">
+                    <label for="cliente" class="form-label">Cliente</label>
+                    <select th:field="*{cliente}" class="form-select" required>
+                        <option value="" disabled selected>Seleziona cliente</option>
+                        <option th:each="cliente : ${clienti}" th:value="${cliente.id}"
+                            th:text="${cliente.nome + ' ' + cliente.cognome}">
+                        </option>
+                    </select>
+                    <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
+                        data-bs-target="#clienteModal">
+                        ➕ Nuovo Cliente
+                    </button>
+                </div>
+
+                <!-- Tavolo -->
+                <div class="col-md-3">
+                    <label for="tavolo" class="form-label">Tavolo</label>
+                    <select th:field="*{tavolo}" class="form-select" required>
+                        <option value="" disabled selected>Seleziona tavolo</option>
+                        <option th:each="tavolo : ${tavoli}" th:value="${tavolo}"
+                            th:text="'Tavolo ' + ${tavolo.numero}">Tavolo 5</option>
+                    </select>
+                </div>
+
+                <!-- Data -->
+                <div class="col-md-3">
+                    <label for="data" class="form-label">Data</label>
+                    <input type="date" th:field="*{data}" class="form-control" required>
+                    <div th:if="${#fields.hasErrors('data')}" class="text-danger small" th:errors="*{data}"></div>
+                </div>
+
+                <!-- Ora -->
+                <div class="col-md-3">
+                    <label for="ora" class="form-label">Ora</label>
+                    <input type="time" th:field="*{ora}" class="form-control" required>
+                    <div th:if="${#fields.hasErrors('ora')}" class="text-danger small" th:errors="*{ora}"></div>
+                </div>
+
+                <!-- Numero Persone -->
+                <div class="col-md-3">
+                    <label for="numeroPersone" class="form-label">Numero Persone</label>
+                    <input type="number" th:field="*{numeroPersone}" class="form-control" min="1" max="30" required>
+                    <div th:if="${#fields.hasErrors('numeroPersone')}" class="text-danger small"
+                        th:errors="*{numeroPersone}"></div>
+                </div>
+
+                <!-- Causale -->
+                <div class="col-12">
+                    <label for="causale" class="form-label">Causale</label>
+                    <input type="text" th:field="*{causale}" class="form-control"
+                        placeholder="Compleanno, evento speciale..." required>
+                    <div th:if="${#fields.hasErrors('causale')}" class="text-danger small" th:errors="*{causale}"></div>
+                </div>
+
+                <!-- Submit -->
+                <div class="col-12 text-end">
+                    <button type="submit" class="btn btn-success">Salva Prenotazione</button>
+                </div>
+
+            </form>
+            <!-- Modale per nuovo cliente -->
+            <div class="modal fade" id="clienteModal" tabindex="-1">
+                <div class="modal-dialog">
+                    <form id="clienteForm" class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Aggiungi Cliente</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body">
+                            <input type="text" class="form-control mb-2" placeholder="Nome" name="nome" required>
+                            <input type="text" class="form-control mb-2" placeholder="Cognome" name="cognome" required>
+                            <input type="email" class="form-control mb-2" placeholder="Email" name="email" required>
+                            <input type="text" class="form-control mb-2" placeholder="Telefono" name="telefono"
+                                required>
+                            <!-- Aggiungi altri campi se servono -->
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-success">Salva</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+    <script th:src="@{/javascript/script.js}"></script>
+</body>
+
+</html>

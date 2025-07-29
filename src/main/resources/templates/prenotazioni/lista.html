@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="it" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Lista Prenotazioni</title>
+</head>
+
+<body>
+    <div th:replace="~{layout :: layout(~{::content})}">
+        <div th:fragment="content">
+            <!-- Navbar inclusa nel layout -->
+
+            <!-- Seconda barra: barra di ricerca -->
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <form th:action="@{/prenotazioni}" method="get">
+                        <div class="input-group">
+                            <input type="text" name="keyword" class="form-control"
+                                placeholder="Cerca per cliente, tavolo o data">
+                            <button type="submit" class="btn btn-outline-danger">Cerca</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-md-6 text-end">
+                    <a th:href="@{/prenotazioni/nuova}" class="btn btn-success">+ Nuova Prenotazione</a>
+                </div>
+            </div>
+
+            <!-- Lista delle prenotazioni -->
+            <table class="table table-hover shadow">
+                <thead class="table-danger">
+                    <tr>
+                        <th>Cliente</th>
+                        <th>Data</th>
+                        <th>Orario</th>
+                        <th>Tavolo</th>
+                        <th>Persone</th>
+                        <th>Azioni</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="prenotazione : ${prenotazioni}">
+                        <td th:text="${prenotazione.cliente.nome}">Mario Rossi</td>
+                        <td th:text="${prenotazione.data}">2025-07-23</td>
+                        <td th:text="${prenotazione.ora}">20:00</td>
+                        <td th:text="${prenotazione.tavolo.numero}">5</td>
+                        <td th:text="${prenotazione.numeroPersone}">4</td>
+                        <td>
+                            <a th:href="@{/prenotazioni/edit/{id}(id=${prenotazione.id})}"
+                                class="btn btn-sm btn-warning">Modifica</a>
+                            <a th:href="@{/prenotazioni/delete/{id}(id=${prenotazione.id})}"
+                                class="btn btn-sm btn-danger">Elimina</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+
+</html>

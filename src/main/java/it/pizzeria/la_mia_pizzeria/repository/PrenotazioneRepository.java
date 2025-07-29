@@ -5,6 +5,8 @@ import java.time.LocalTime;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import it.pizzeria.la_mia_pizzeria.model.Prenotazione;
 
@@ -24,4 +26,17 @@ public interface PrenotazioneRepository extends JpaRepository<Prenotazione, Long
 
     //Ricerca per interallo di date(Inizio e Fine)
     List<Prenotazione> findByDataBetween(LocalDate inizio, LocalDate fine);
-}
+
+    // Ricerca avanzata multi-criterio
+    @Query("SELECT p FROM Prenotazione p WHERE " +
+           "(:data IS NULL OR p.data = :data) AND " +
+           "(:ora IS NULL OR p.ora = :ora) AND " +
+           "(:causale IS NULL OR LOWER(p.causale) = LOWER(:causale)) AND " +
+           "(:clienteId IS NULL OR p.cliente.id = :clienteId)")
+    List<Prenotazione> cercaPrenotazioni(
+                @Param("data") LocalDate data,
+                @Param("ora") LocalTime ora,
+                @Param("causale") String causale,
+                @Param("clienteId") Long clienteId
+        );
+    }

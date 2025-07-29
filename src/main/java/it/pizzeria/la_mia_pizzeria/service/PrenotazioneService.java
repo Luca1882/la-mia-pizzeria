@@ -1,5 +1,7 @@
 package it.pizzeria.la_mia_pizzeria.service;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -13,4 +15,5 @@ public interface PrenotazioneService {
     Optional<Prenotazione> findById(Long id);
     Prenotazione save(Prenotazione prenotazione);
     void deleteById(Long id);
+    List<Prenotazione> cercaKeyword(LocalDate data, LocalTime ora, String causale, Long clienteId);
 }

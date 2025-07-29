@@ -1,5 +1,7 @@
 package it.pizzeria.la_mia_pizzeria.service;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -9,7 +11,7 @@ import it.pizzeria.la_mia_pizzeria.model.Prenotazione;
 import it.pizzeria.la_mia_pizzeria.repository.PrenotazioneRepository;
 
 @Service
-public class PrenotazioneServiceImpl implements PrenotazioneService{
+public class PrenotazioneServiceImpl implements PrenotazioneService {
 
     private final PrenotazioneRepository prenotazioneRepository;
 
@@ -36,4 +38,9 @@ public class PrenotazioneServiceImpl implements PrenotazioneService{
     public void deleteById(Long id) {
         prenotazioneRepository.deleteById(id);
     }
-} 
+
+    @Override
+    public List<Prenotazione> cercaKeyword(LocalDate data, LocalTime ora, String causale, Long clienteId) {
+        return prenotazioneRepository.cercaPrenotazioni(data, ora, causale, clienteId);
+    }
+}
